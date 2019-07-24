@@ -55,6 +55,8 @@ function read_rdb_hdr(test::Symbol)
 	file = "/n/ir71/d3/fessler/fmri-data-michelle-L+S/P97792.7"
 	if isfile(file)
 		return read_rdb_hdr(file).dab[2] == 31
+	else
+		@warn("non-UM testing is vacuous")
 	end
 	true
 end

@@ -2,3 +2,9 @@ name = "MIRTio"
 uuid = "274281c4-ae57-11e9-2014-65d3d5d9358c"
 authors = ["fessler@umich.edu <fessler@umich.edu>"]
 version = "0.1.0"
+
+[compat]
+julia = "1.1"
+
+[deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
