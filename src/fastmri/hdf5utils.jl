@@ -12,7 +12,7 @@ using HDF5
 
 
 """
-`h5_getkeys(filename::String)`
+`h5_get_keys(filename::String)`
 Get `names` from file.  Returns a `?`
 """
 function h5_get_keys(filename::String)
