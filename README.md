@@ -1,6 +1,8 @@
 # MIRTio.jl
 https://github.com/JeffFessler/MIRTio.jl
 
+[![Build Status](https://travis-ci.org/JeffFessler/MIRTio.jl.svg?branch=master)](https://travis-ci.org/JeffFessler/MIRTio.jl)
+[![codecov.io](http://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=master)](http://codecov.io/github/JeffFessler/MIRTio.jl?branch=master)
 
 File I/O routines for
 [MIRT (Michigan Image Reconstruction Toolbox) in Julia](https://github.com/JeffFessler/MIRT.jl)
@@ -16,6 +18,10 @@ over at
 is representative of the algorithms there,
 separate from I/O issues.
 
+The primary functions exported are for reading GE MRI kspace data:
+* `loadpfile`
+* `read_rdb_hdr`
+
 This software was developed at the
 [University of Michigan](https://umich.edu/)
 by
@@ -30,3 +36,5 @@ by following the instructions at
 https://github.com/JeffFessler/MIRT.jl
 will automatically include this code
 through the magic of Julia's package manager.
+
+Tested with Julia 1.1, 1.2, 1.3
