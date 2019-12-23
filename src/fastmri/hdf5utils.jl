@@ -141,7 +141,9 @@ function h5_test(test::Symbol)
 	@test h5_get_RSS(filename ; T=T) == pdims(rss)
 	@test h5_get_kspace(filename ; T=ComplexF32) == pdims(ksp)
 
-#	getcomplextype(dataset) # todo: unsure how to test this one
+	h5open(filename, "r") do fid
+		@test getcomplextype(fid["kspace"]) == ComplexF32
+	end
 	true
 end
 
