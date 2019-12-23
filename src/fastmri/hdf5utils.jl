@@ -14,14 +14,12 @@ using Test: @test
 
 """
 `h5_get_keys(filename::String)`
-Get `names` from file.  Returns a `?`
+Get `names` from file.  Returns an `Array{String}`
 """
 function h5_get_keys(filename::String)
-
 	return h5open(filename, "r") do file
 		names(file)
 	end
-
 end
 
 
@@ -30,7 +28,6 @@ end
 Get `attrs` from file.  Returns a `Dict`
 """
 function h5_get_attributes(filename::String)
-
 	return h5open(filename, "r") do file
 		a = attrs(file)
 		attr = Dict{String,Any}()
@@ -39,17 +36,15 @@ function h5_get_attributes(filename::String)
 		end
 		attr
 	end
-
 end
+
 
 """
 `h5_get_ismrmrd(filename::String)`
 Get ISMRM header data from file.  Returns a `?`
 """
 function h5_get_ismrmrd(filename::String)
-
 	return h5read(filename, "ismrmrd_header")
-
 end
 
 
@@ -64,10 +59,8 @@ but the dimensions are permuted in Julia compared to Python,
 hence the calls to `permutedims` in the following functions.
 """
 function h5_get_ESC(filename::String; T::DataType = ComplexF32)
-
 	data = T.(h5read(filename, "reconstruction_esc"))
 	return permutedims(data, ndims(data):-1:1)
-
 end
 
 
@@ -76,10 +69,8 @@ end
 Return `Array` of RSS (root sum of squares) data from file.
 """
 function h5_get_RSS(filename::String; T::DataType = ComplexF32)
-
 	data = T.(h5read(filename, "reconstruction_rss"))
 	return permutedims(data, ndims(data):-1:1)
-
 end
 
 
@@ -88,12 +79,10 @@ end
 Return `Array` of kspace data from file.
 """
 function h5_get_kspace(filename::String; T::DataType = ComplexF32)
-
 	data = h5open(filename, "r") do file
 		readmmap(file["kspace"], Array{getcomplextype(file["kspace"])})
 	end
 	return permutedims(T.(data), ndims(data):-1:1)
-
 end
 
 
@@ -127,6 +116,7 @@ function h5_get_test(test::Symbol)
 		write(file, "reconstruction_esc", esc)
 		write(file, "reconstruction_rss", rss)
 		write(file, "kspace", ksp)
+		attrs(file)["kspace"] = "spiral"
 	end
 
 	@test hdr == h5read(filename, "ismrmrd_header")
@@ -134,6 +124,7 @@ function h5_get_test(test::Symbol)
 	@test ksp == h5read(filename, "kspace")
 
 	pdims = x -> permutedims(x, 3:-1:1)
+	@test h5_get_keys(filename) isa Array{String}
 	@test h5_get_keys(filename)[2] == "kspace"
 	@test h5_get_attributes(filename) isa Dict
 	@test h5_get_ismrmrd(filename) == hdr
@@ -147,4 +138,4 @@ function h5_get_test(test::Symbol)
 	true
 end
 
-# h5_test(:test)
+# h5_get_test(:test)
