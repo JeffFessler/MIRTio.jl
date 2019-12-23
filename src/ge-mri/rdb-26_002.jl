@@ -2,7 +2,13 @@
 rdb-26_002.jl
 based on
 https://gitlab.com/fMRI/toppe/blob/master/+toppe/+utils/read_rdb_hdr.m
+
+Matlab version is:
+Copyright (c) 2012 by General Electric Company. All rights reserved.
+
+2019-05-22 Julia version by Jeff Fessler
 =#
+
 
 """
 `s = read_rdb_hdr_26_002(fid)`
@@ -14,11 +20,6 @@ in
 
 out
 - `s::NamedTuple` with header values, accessed by s.key
-
-Matlab version is:
-Copyright (c) 2012 by General Electric Company. All rights reserved.
-
-2019-05-22 Julia version by Jeff Fessler
 """
 function read_rdb_hdr_26_002(fid::IOStream)
 	seek(fid, 0)
