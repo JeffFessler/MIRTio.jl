@@ -2,14 +2,39 @@
 pfile.jl
 read GE MRI k-space data from .p file
 based on https://gitlab.com/fMRI/toppe/+toppe/+utils/loadpfile.m
+
+(c) 2016 The Regents of the University of Michigan
+Jon-Fredrik Nielsen, jfnielse@umich.edu
+
+Comments from Matlab version at
+https://gitlab.com/fMRI/toppe/+toppe/+utils/loadpfile.m
+
+This file was derived from part of the TOPPE development environment
+for platform-independent MR pulse programming.
+
+TOPPE is free software: you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as published by
+the Free Software Foundation version 2.0 of the License.
+
+TOPPE is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public License
+along with TOPPE.
+If not, see <http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html>.
+
+2019-05-22 Julia version by Jeff Fessler
 =#
 
 export loadpfile
 
 # using MIRTio: read_rdb_hdr
 
+
 """
-`(dat, rdb_hdr) = loadpfile(pfile ; ...)`
+    (dat, rdb_hdr) = loadpfile(pfile ; ...)
 
 Load data for one or more echoes from GE MRI scan Pfile.
 
@@ -32,31 +57,7 @@ out
 - `dat::Array{Complex{Int16}}` `[ndat, ncoil, nslice, necho, nview]`
 - `rdb_hdr::NamedTuple`	header information
 
-Note that to save memory the output type is complex-valued Int16.
-
-Comments from Matlab version at
-https://gitlab.com/fMRI/toppe/+toppe/+utils/loadpfile.m
-
-This file was derived from part of the TOPPE development environment
-for platform-independent MR pulse programming.
-
-TOPPE is free software: you can redistribute it and/or modify
-it under the terms of the GNU Library General Public License as published by
-the Free Software Foundation version 2.0 of the License.
-
-TOPPE is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Library General Public License for more details.
-
-You should have received a copy of the GNU Library General Public License
-along with TOPPE.
-If not, see <http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html>.
-
-(c) 2016 The Regents of the University of Michigan
-Jon-Fredrik Nielsen, jfnielse@umich.edu
-
-2019-05-22 Julia version by Jeff Fessler
+To save memory the output type is complex-valued Int16.
 """
 function loadpfile(pfile::String ;
 		coils::AbstractVector{<:Integer} = empty([], Integer),
@@ -189,5 +190,6 @@ end
 does nothing now because tests require huge data files
 """
 function loadpfile(test::Symbol)
+	# todo: use tempname() to write a test file to read back
 	true
 end
