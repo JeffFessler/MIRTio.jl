@@ -6,7 +6,7 @@ Documentation by Jeff Fessler
 =#
 
 export h5_get_keys, h5_get_attributes, h5_get_ismrmrd
-export h5_get_ESC, h5_get_RSS, h5_get_kspace
+export h5_get_ESC, h5_get_RSS, h5_get_kspace, h5_get_test
 
 using HDF5
 using Test: @test
@@ -109,10 +109,10 @@ end
 
 
 """
-    `h5_test(:test)`
+    `h5_get_test(:test)`
 self test
 """
-function h5_test(test::Symbol)
+function h5_get_test(test::Symbol)
 	test != :test && throw("bad test $test")
 
 	filename = tempname()
