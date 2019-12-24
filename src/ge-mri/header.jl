@@ -8,7 +8,8 @@ This code is designed to read such scan headers.
 2019-12-23 Jeff Fessler
 =#
 
-export header_read, header_write, header_test
+export header_read, header_write
+export header_string, header_test
 
 using Test: @test, @inferred
 
