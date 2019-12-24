@@ -56,11 +56,16 @@ self test, using a local pfile at UM
 """
 function read_rdb_hdr(test::Symbol)
 	!(test === :test) && throw("bad test $test")
+	@test header_init(rdb_hdr_26_002_def()) isa NamedTuple
+
+	# todo: write/read for 26_002
+
 	file = "/n/ir71/d3/fessler/fmri-data-michelle-L+S/P97792.7"
 	if isfile(file)
 		return read_rdb_hdr(file).dab[2] == 31
 	else
 		@warn("non-UM testing is vacuous")
 	end
+
 	true
 end
