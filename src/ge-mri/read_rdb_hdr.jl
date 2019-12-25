@@ -63,6 +63,7 @@ function read_rdb_hdr(test::Symbol)
 	@test ht isa NamedTuple
 
 #= todo: commented out currently because of "setindex" issues in 1.3
+=#
 	tname = tempname()
 
 	open(tname, "w") do fid
@@ -71,11 +72,14 @@ function read_rdb_hdr(test::Symbol)
 
 	@test_throws String read_rdb_hdr(tname)
 
-	ht = setindex(ht, Float32(26.002), :rdbm_rev)
+#	ht = setindex(ht, Float32(26.002), :rdbm_rev)
+@show ht.rdbm_rev
+	ht = merge(ht, [:rdbm_rev => Float32(26.002)])
+@show ht.rdbm_rev
+
 	hr = read_rdb_hdr(tname)
 	@test hr isa NamedTuple
 	@test hr[:rdbm_rev] isa Float32
-=#
 
 	# UM-only test below here
 	file = "/n/ir71/d3/fessler/fmri-data-michelle-L+S/P97792.7"
