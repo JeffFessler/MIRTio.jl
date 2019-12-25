@@ -11,9 +11,8 @@ Copyright (c) 2012 by General Electric Company. All rights reserved.
 
 export read_rdb_hdr
 
+# using MIRTio: header_*, rdb_hdr_26_002_def
 using Test: @test, @test_throws
-
-include("rdb-26_002.jl") # rdb_hdr_26_002_def()
 
 
 """
@@ -28,9 +27,9 @@ function read_rdb_hdr(fid::IOStream)
 	rdbm_rev = read(fid, Float32) # raw header (RDBM) revision number
 
 	if rdbm_rev == Float32(26.002)
-	#	ht = read_rdb_hdr_26_002(fid)
-		ht = header_read(fid, rdb_hdr_26_002_def())
-		ht = header_string(ht)
+		hd = rdb_hdr_26_002_def()
+		ht = header_read(fid, hd)
+		ht = header_string(ht) # convert Array{Cuchar} to String
 	else
 		throw("unknown RDBM rev $rdbm_rev")
 	end
@@ -52,34 +51,47 @@ end
 
 
 """
-    read_rdb_hdr(:test)
-self test, using a local pfile at UM
+    read_rdb_hdr_test()
+self test with random data
 """
-function read_rdb_hdr(test::Symbol)
-	!(test === :test) && throw("bad test $test")
-
+function read_rdb_hdr_test()
 	hd = rdb_hdr_26_002_def()
-	ht = header_init(hd)
+	ht = header_init(hd) # random header values
 	@test ht isa NamedTuple
 
-#= todo: commented out currently because of "setindex" issues in 1.3
-=#
 	tname = tempname()
 
 	open(tname, "w") do fid
 		header_write(fid, ht ; bytes = header_size(hd))
 	end
 
+	# intentionally fail due to random :rdbm_rev
 	@test_throws String read_rdb_hdr(tname)
 
-#	ht = setindex(ht, Float32(26.002), :rdbm_rev)
-@show ht.rdbm_rev
-	ht = merge(ht, [:rdbm_rev => Float32(26.002)])
-@show ht.rdbm_rev
+	# now set :rdbm_rev so that read test passes
+	ht = merge(ht, [:rdbm_rev => Float32(26.002)]) # instead of setindex
+
+	open(tname, "w") do fid
+		header_write(fid, ht ; bytes = header_size(hd))
+	end
 
 	hr = read_rdb_hdr(tname)
 	@test hr isa NamedTuple
 	@test hr[:rdbm_rev] isa Float32
+	@test hr == header_string(ht)
+
+	true
+end
+
+
+"""
+    read_rdb_hdr(:test)
+self test, using both random data and a local pfile at UM
+"""
+function read_rdb_hdr(test::Symbol)
+	!(test === :test) && throw("bad test $test")
+
+	@test read_rdb_hdr_test()
 
 	# UM-only test below here
 	file = "/n/ir71/d3/fessler/fmri-data-michelle-L+S/P97792.7"

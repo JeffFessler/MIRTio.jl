@@ -9,6 +9,7 @@ Copyright (c) 2012 by General Electric Company. All rights reserved.
 2019-05-22 Julia version by Jeff Fessler
 =#
 
+export rdb_hdr_26_002_def
 
 #=
 """
@@ -590,6 +591,7 @@ end
 Return array [Symbol Int DataType] `? × 3` used in `header_read()`
 """
 function rdb_hdr_26_002_def()
+	vcat( # todo: broken into chunks to avoid StackOverflowError()
 	[
 	:rdbm_rev 1 Float32;
 	:off_data 1 Int32;
@@ -792,6 +794,7 @@ function rdb_hdr_26_002_def()
 	:user_usage_tag 1 UInt32;
 	:user_fill_mapMSW 1 UInt32;
 	:user_fill_mapLSW 1 UInt32;
+	], [
 	:user20 1 Float32;
 	:user21 1 Float32;
 	:user22 1 Float32;
@@ -992,6 +995,7 @@ function rdb_hdr_26_002_def()
 	:kacq_uid 1 Int32;
 	:psc_ta 1 Int32;
 	:disk_acq_ctrl 1 Int32;
+	], [
 	:asset_localTx 1 Int32;
 	:a3dscale 1 Float32;
 	:broad_band_select 1 Int32;
@@ -1133,5 +1137,5 @@ function rdb_hdr_26_002_def()
 	:virtual_chan_uniformity_type 1 UInt16;
 	:num_virtual_channels 1 UInt16;
 	:excess 507 Int16;
-	]
+	])
 end
