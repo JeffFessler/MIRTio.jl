@@ -9,7 +9,7 @@ This code is designed to read such scan headers.
 =#
 
 export header_read, header_write
-export header_init, header_string, header_test
+export header_init, header_size, header_string, header_test
 
 using Test: @test, @inferred
 

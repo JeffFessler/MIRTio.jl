@@ -30,26 +30,27 @@ If not, see <http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html>.
 
 export loadpfile
 
-# using MIRTio: read_rdb_hdr
+# using MIRTio: read_rdb_hdr, header_init, header_size, header_string, header_write
+using Test: @test
 
 
 """
-    (dat, rdb_hdr) = loadpfile(pfile ; ...)
+    (dat, rdb_hdr) = loadpfile(fid::IOStream ; ...)
 
 Load data for one or more echoes from GE MRI scan Pfile.
 
 in
-- `pfile::String` filename
+- `fid::IOStream`
 
 option
-- `coils::AbstractVector{<:Integer}`
+- `coils::AbstractVector{Int}`
 	only get data for these coils; default: all coils
-- `echoes::AbstractVector{<:Integer}`
+- `echoes::AbstractVector{Int}`
 	only get data for these echoes; default: all echoes
-- `slices::AbstractVector{<:Integer}`
+- `slices::AbstractVector{Int}`
 	only get data for these slices; default: `2:nslices` (NB!)
 	because first slice (dabslice=0 slot) may contain corrupt data.
-- `views::AbstractVector{<:Integer}`
+- `views::AbstractVector{Int}`
 	only get data for these views; default: all views
 - `quiet::Bool`	non-verbosity, default `false`
 
@@ -59,24 +60,23 @@ out
 
 To save memory the output type is complex-valued Int16.
 """
-function loadpfile(pfile::String ;
-		coils::AbstractVector{<:Integer} = empty([], Integer),
-		echoes::AbstractVector{<:Integer} = empty([], Integer),
-		slices::AbstractVector{<:Integer} = empty([], Integer),
-		views::AbstractVector{<:Integer} = empty([], Integer),
+function loadpfile(fid::IOStream ;
+		filesize::Int = 0,
+		coils::AbstractVector{Int} = empty([], Int),
+		echoes::AbstractVector{Int} = empty([], Int),
+		slices::AbstractVector{Int} = empty([], Int),
+		views::AbstractVector{Int} = empty([], Int),
 		quiet::Bool = false,
 	)
 
-	fid = open(pfile, "r") # open pfile
 	rdb_hdr = read_rdb_hdr(fid) # read header
 
 	# Header parameters
-	ndat = rdb_hdr.frame_size
+	ndat = Int(rdb_hdr.frame_size)
 	nslices = rdb_hdr.nslices
 	ptsize = rdb_hdr.point_size # 2: data stored in short int format, int16)
-	if ptsize != 2 # 4 (extended precision) unsupported here
+	ptsize != 2 && # 4 (extended precision) unsupported here
 		throw("ptsize = $ptsize unsupported")
-	end
 	nechoes = rdb_hdr.nechoes
 	nviews = rdb_hdr.nframes
 	ncoils = rdb_hdr.dab[2] - rdb_hdr.dab[1] + 1
@@ -84,6 +84,7 @@ function loadpfile(pfile::String ;
 	# Calculate size of data chunks
 	# See pfilestruct.jpg, and rhrawsize calculation in .e file.
 	# number of data points per 'echo' loaddab slot. Includes baseline (0) view:
+	# Apparent file data order is: [ndat, nview, necho, nslice, ncoil]
 	echores  = ndat * (nviews+1)
 	sliceres = nechoes * echores # number of data points per 'slice'
 	coilres  = nslices * sliceres # number of data points per receive coil
@@ -93,11 +94,8 @@ function loadpfile(pfile::String ;
 		2 * ptsize * ncoils * nslices * nechoes * (nviews+1) * ndat
 
 	# File size check
-	if pfilesize != filesize(pfile)
-		throw("Expected $(pfilesize/1e6) MB but see $(filesize(pfile)/1e6) MB file")
-	#	fprintf('Press enter to continue anyway...');
-	#	input('');
-	end
+	(filesize != 0) && (pfilesize != filesize) &&
+		throw("Expected $(pfilesize/1e6) MB but see $(filesize/1e6) MB file")
 
 	# Check if second view is empty
 	# This happens when there's only one view, but the scanner sets nviews = 2
@@ -138,10 +136,11 @@ function loadpfile(pfile::String ;
 
 	if !quiet
 		@info("ndat = $ndat, memory = $(memneeded/1e9) GB")
-		@info("slices: $(slices[1])-$(slices[end]) / $nslices")
-		@info("echoes: $(echoes[1])-$(echoes[end]) / $nechoes")
-		@info("views: $(views[1])-$(views[end]) / $nviews")
-		@info("coils: $(coils[1])-$(coils[end]) / $ncoils")
+		@info("dims = $dims")
+		@info("slices $(slices[1]):$(slices[end]) / $nslices")
+		@info("echoes $(echoes[1]):$(echoes[end]) / $nechoes")
+		@info("views $(views[1]):$(views[end]) / $nviews")
+		@info("coils $(coils[1]):$(coils[end]) / $ncoils")
 	end
 
 	# Read data from file
@@ -151,11 +150,12 @@ function loadpfile(pfile::String ;
 	dtmp = Array{Complex{Int16}}(undef, ndat) # one readout
 #	!quiet && textprogressbar('Loading data: ')
 	for icoil = coils
-		@show icoil
+		!quiet && (@show icoil)
 	#	!quiet && textprogressbar(icoil/ncoils*100)
 		for islice = slices
 			for iecho = echoes
 				for iview = views
+				#	!quiet && (@info "icoil=$icoil islice=$islice iecho=$iecho iview=$iview")
 					offsetres = (icoil-1)*coilres + (islice-1)*sliceres + (iecho-1)*echores + iview*ndat
 					offsetbytes = 2 * ptsize * offsetres
 					seek(fid, rdb_hdr.off_data + offsetbytes)
@@ -167,7 +167,6 @@ function loadpfile(pfile::String ;
 		end
 	end
 
-	close(fid)
 #	!quiet && textprogressbar(' done.')
 
 	return (data, rdb_hdr)
@@ -175,21 +174,85 @@ end
 
 
 """
-`loadpfile(file, echo::Integer ; ...)`
-
-load a single echo
+    loadpfile(file::String ; kwargs...)
 """
-function loadpfile(pfile::String, echo::Integer ; kwarg...)
-	return loadpfile(pfile, echoes=[echo], kwarg...)
+function loadpfile(file::String ; kwargs...)
+	open(file, "r") do fid
+		return loadpfile(fid ; filesize=filesize(file), kwargs...)
+	end
 end
 
 
 """
-`loadpfile(:test)`
+    loadpfile(file, echo::Integer ; ...)
 
-does nothing now because tests require huge data files
+load a single echo
+"""
+function loadpfile(pfile::String, echo::Integer ; kwarg...)
+	return loadpfile(pfile, echoes=[echo] ; kwarg...)
+end
+
+
+"""
+    loadpfile(:test)
+self test
 """
 function loadpfile(test::Symbol)
-	# todo: use tempname() to write a test file to read back
+	!(test === :test) && throw("bad test $test")
+
+	hd = rdb_hdr_26_002_def()
+	ht = header_init(hd) # random header values
+	hs = header_size(hd)
+
+	necho = 2
+	nslice = 7
+	nview = 64
+	ndat = 100
+	ncoil = 5
+	ht = merge(ht, [:rdbm_rev => Float32(26.002)]) # instead of setindex
+	ht = merge(ht, [:frame_size => UInt16(ndat)])
+	ht = merge(ht, [:nslices => UInt16(nslice)])
+	ht = merge(ht, [:point_size => Int16(2)])
+	ht = merge(ht, [:nechoes => Int16(necho)])
+	ht = merge(ht, [:nframes => Int16(nview)])
+	dab = zeros(Int16,8)
+	dab[2] = Int16(ncoil-1)
+#	@show dab
+	ht = merge(ht, [:dab => dab])
+	ht = merge(ht, [:off_data => Int32(hs)])
+
+	tname = tempname()
+	open(tname, "w") do fid
+		header_write(fid, ht)
+	end
+
+	# Apparent file data order is: [ndat, nview, necho, nslice, ncoil]
+	fdat = rand(Complex{Int16}, ndat, nview+1, necho, nslice, ncoil) # rand test data
+	open(tname, "a") do fid
+		write(fid, fdat)
+	end
+
+	(odat, hr) = loadpfile(tname ; quiet=true) # load and verify
+	@test hr == header_string(ht)
+	pdat = permutedims(odat, [1, 5, 4, 3, 2])
+#=
+	@show size(fdat)
+	@show size(odat)
+	@show size(pdat)
+	@test pdat == fdat[:, 2:end, :, 2:end, :] # skip 1st view and slice
+=#
+
+	iecho = 2
+	(dat1, _) = loadpfile(tname, iecho ; quiet=true)
+	pdat = permutedims(dat1, [1, 5, 4, 3, 2])
+	gdat = fdat[:, 2:end, [iecho], 2:end, :] # skip 1st view and slice
+#=
+	@show size(fdat)
+	@show size(dat1)
+	@show size(pdat)
+	@show size(gdat)
+=#
+	@test pdat == gdat
+
 	true
 end
