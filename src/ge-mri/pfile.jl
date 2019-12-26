@@ -125,14 +125,13 @@ function loadpfile(fid::IOStream ;
 	memneeded = 4 * prod(dims) # 4 bytes per complex value because Int16
 	memfree = Sys.total_memory() # system total memory
 	mempercentuse = 100 * memneeded / memfree
-	if mempercentuse > 100
-		@warn("Loading data ($(memneeded/1e9) GB) may exceed available RAM")
-		@warn("This could freeze computer!")
+	(mempercentuse > 100) &&
+		(@warn("Loading data ($(memneeded/1e9) GB) may exceed available RAM");
+		@warn("This could freeze computer!"))
 	#	fprintf('Press enter to continue anyway...');
 	#	input('');
-	elseif mempercentuse > 90 # Warn if we will we use 90% of memory
+	(mempercentuse > 90) && # Warn if we will we use 90% of memory
 		@warn("Loading data ($(memneeded/1e9) GB) will use $mempercentuse % of your available RAM. Proceed with caution!")
-	end
 
 	!quiet && (@info("ndat = $ndat, memory = $(memneeded/1e9) GB"))
 	!quiet && (@info("dims = $dims"))
@@ -251,6 +250,15 @@ function loadpfile(test::Symbol)
 	@show size(gdat)
 =#
 	@test pdat == gdat
+
+	nview = 2 # test special case
+	ht = merge(ht, [:nframes => Int16(nview)])
+	fdat = zeros(Complex{Int16}, ndat, nview+1, necho, nslice, ncoil)
+	open(tname, "w") do fid
+		header_write(fid, ht)
+		write(fid, fdat)
+	end
+	loadpfile(tname ; quiet=true)
 
 	true
 end
