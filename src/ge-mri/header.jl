@@ -55,7 +55,7 @@ function header_init(hd::Matrix{Any})
 		Tr = T == Cuchar ? cset : T
 		vals[i] = n > 1 ? rand(Tr, n) : rand(Tr)
 	end
-	return ( ; zip(hd[:,1], vals)... ) # NamedTuple
+	return ( ; zip(hd[:,1], vals)..., ) # NamedTuple
 end
 
 
@@ -131,7 +131,7 @@ function header_read(fid::IOStream, hd::Matrix{Any} ; seek0::Bool = true)
 			vals[i] = data
 		end
 	end
-	return ( ; zip(hd[:,1], vals)... ) # NamedTuple
+	return ( ; zip(hd[:,1], vals)..., ) # NamedTuple
 end
 
 
@@ -160,7 +160,7 @@ function header_string(ht::NamedTuple ; strip::Bool = false)
 		end
 		vals[i] = val
 	end
-	return ( ; zip(keys(ht), vals)... ) # NamedTuple
+	return ( ; zip(keys(ht), vals)..., ) # NamedTuple
 end
 
 
