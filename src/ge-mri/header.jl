@@ -155,7 +155,7 @@ function header_string(ht::NamedTuple ; strip::Bool = false)
 	for (i,key) in enumerate(keys(ht))
 		val = ht[key]
 		if val isa Array{Cuchar}
-			val = String(val)
+			val = String(copy(val)) # copy is essential here!
 			val = strip ? rstrip(val) : val
 		end
 		vals[i] = val
