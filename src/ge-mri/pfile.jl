@@ -134,14 +134,12 @@ function loadpfile(fid::IOStream ;
 		@warn("Loading data ($(memneeded/1e9) GB) will use $mempercentuse % of your available RAM. Proceed with caution!")
 	end
 
-	if !quiet
-		@info("ndat = $ndat, memory = $(memneeded/1e9) GB")
-		@info("dims = $dims")
-		@info("slices $(slices[1]):$(slices[end]) / $nslices")
-		@info("echoes $(echoes[1]):$(echoes[end]) / $nechoes")
-		@info("views $(views[1]):$(views[end]) / $nviews")
-		@info("coils $(coils[1]):$(coils[end]) / $ncoils")
-	end
+	!quiet && (@info("ndat = $ndat, memory = $(memneeded/1e9) GB"))
+	!quiet && (@info("dims = $dims"))
+	!quiet && (@info("slices $(slices[1]):$(slices[end]) / $nslices"))
+	!quiet && (@info("echoes $(echoes[1]):$(echoes[end]) / $nechoes"))
+	!quiet && (@info("views $(views[1]):$(views[end]) / $nviews"))
+	!quiet && (@info("coils $(coils[1]):$(coils[end]) / $ncoils"))
 
 	# Read data from file
 	# Julia stores complex data as real1,imag1, real2,imag2, ... unlike matlab!
