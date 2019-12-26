@@ -135,6 +135,8 @@ function h5_get_test(test::Symbol)
 	h5open(filename, "r") do fid
 		@test getcomplextype(fid["kspace"]) == ComplexF32
 	end
+
+	rm(filename)
 	true
 end
 

@@ -126,8 +126,7 @@ function loadpfile(fid::IOStream ;
 	memfree = Sys.total_memory() # system total memory
 	mempercentuse = 100 * memneeded / memfree
 	(mempercentuse > 100) &&
-		(@warn("Loading data ($(memneeded/1e9) GB) may exceed available RAM");
-		@warn("This could freeze computer!"))
+		@warn("Loading data ($(memneeded/1e9) GB) may exceed available RAM and freeze system")
 	#	fprintf('Press enter to continue anyway...');
 	#	input('');
 	(mempercentuse > 90) && # Warn if we will we use 90% of memory
@@ -259,6 +258,7 @@ function loadpfile(test::Symbol)
 		write(fid, fdat)
 	end
 	loadpfile(tname ; quiet=true)
+	rm(tname)
 
 	true
 end

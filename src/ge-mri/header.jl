@@ -189,6 +189,8 @@ function header_test(test::Symbol)
 		@test all([hu[i] == ht[i] for i=2:length(hu)])
 	end
 
+	rm(tname)
+
 	true
 end
 
