@@ -9,7 +9,7 @@ File I/O routines for
 
 This code is isolated from the main MIRT.jl toolbox,
 because complete tests of these functions
-requires large files
+require large files
 that are not part of the repo.
 
 The primary functions exported are for reading GE MRI kspace data:
@@ -37,4 +37,4 @@ https://github.com/JeffFessler/MIRT.jl
 will automatically include this code
 through the magic of Julia's package manager.
 
-Tested with Julia 1.0.5, 1.3, and should work with 1.1, 1.2.
+Tested with Julia 1.0.5, 1.3, 1.4, and should work with 1.1, 1.2.
