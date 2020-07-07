@@ -6,10 +6,10 @@ Documentation by Jeff Fessler
 =#
 
 export h5_get_keys, h5_get_attributes, h5_get_ismrmrd
-export h5_get_ESC, h5_get_RSS, h5_get_kspace, h5_get_test
+export h5_get_ESC, h5_get_RSS, h5_get_kspace, h5_getcomplextype
 
-using HDF5
-using Test: @test
+using HDF5: h5open, h5read, HDF5Datatype, attrs, datatype, readmmap
+import HDF5
 
 
 """
@@ -80,7 +80,7 @@ Return `Array` of kspace data from file.
 """
 function h5_get_kspace(filename::String; T::DataType = ComplexF32)
 	data = h5open(filename, "r") do file
-		readmmap(file["kspace"], Array{getcomplextype(file["kspace"])})
+		readmmap(file["kspace"], Array{h5_getcomplextype(file["kspace"])})
 	end
 	return permutedims(T.(data), ndims(data):-1:1)
 end
@@ -90,54 +90,8 @@ end
 Copied (basically) from
 https://github.com/MagneticParticleImaging/MPIFiles.jl/blob/79711bf7af389f9e2dd4b0370e64040e5da1e193/src/Utils.jl#L33
 =#
-function getcomplextype(dataset)
+function h5_getcomplextype(dataset)
 	T = HDF5.hdf5_to_julia_eltype(
 		HDF5Datatype(HDF5.h5t_get_member_type(datatype(dataset).id, 0)))
 	return Complex{T}
 end
-
-
-"""
-    `h5_get_test(:test)`
-self test
-"""
-function h5_get_test(test::Symbol)
-	test != :test && throw("bad test $test")
-
-	filename = tempname()
-
-	hdr = "ismrm header test"
-	T = Float32
-	esc = rand(T, 3,4,5)
-	rss = rand(T, 3,4,5)
-	ksp = complex.(rand(T, 3,4,5), rand(T, 3,4,5))
-	h5open(filename, "w") do file
-		write(file, "ismrmrd_header", hdr)
-		write(file, "reconstruction_esc", esc)
-		write(file, "reconstruction_rss", rss)
-		write(file, "kspace", ksp)
-		attrs(file)["kspace"] = "spiral"
-	end
-
-	@test hdr == h5read(filename, "ismrmrd_header")
-	@test rss == h5read(filename, "reconstruction_rss")
-	@test ksp == h5read(filename, "kspace")
-
-	pdims = x -> permutedims(x, 3:-1:1)
-	@test h5_get_keys(filename) isa Array{String}
-	@test h5_get_keys(filename)[2] == "kspace"
-	@test h5_get_attributes(filename) isa Dict
-	@test h5_get_ismrmrd(filename) == hdr
-	@test h5_get_ESC(filename ; T=T) == pdims(esc)
-	@test h5_get_RSS(filename ; T=T) == pdims(rss)
-	@test h5_get_kspace(filename ; T=ComplexF32) == pdims(ksp)
-
-	h5open(filename, "r") do fid
-		@test getcomplextype(fid["kspace"]) == ComplexF32
-	end
-
-	rm(filename)
-	true
-end
-
-# h5_get_test(:test)

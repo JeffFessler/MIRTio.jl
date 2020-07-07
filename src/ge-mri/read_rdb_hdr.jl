@@ -12,7 +12,6 @@ Copyright (c) 2012 by General Electric Company. All rights reserved.
 export read_rdb_hdr
 
 # using MIRTio: header_*, rdb_hdr_26_002_def
-using Test: @test, @test_throws
 
 
 """
@@ -47,55 +46,4 @@ Read from `file`
 """
 function read_rdb_hdr(file::String)
 	return open(read_rdb_hdr, file)
-end
-
-
-"""
-    read_rdb_hdr_test()
-self test with random data
-"""
-function read_rdb_hdr_test()
-	hd = rdb_hdr_26_002_def()
-	ht = header_init(hd) # random header values
-	@test ht isa NamedTuple
-
-	tname = tempname()
-
-	open(tname, "w") do fid
-		header_write(fid, ht ; bytes = header_size(hd))
-	end
-
-	# intentionally fail due to random :rdbm_rev
-	@test_throws String read_rdb_hdr(tname)
-
-	# now set :rdbm_rev so that read test passes
-	ht = merge(ht, [:rdbm_rev => Float32(26.002)]) # instead of setindex
-
-	open(tname, "w") do fid
-		header_write(fid, ht ; bytes = header_size(hd))
-	end
-
-	hr = read_rdb_hdr(tname)
-	@test hr isa NamedTuple
-	@test hr[:rdbm_rev] isa Float32
-	@test hr == header_string(ht)
-
-	true
-end
-
-
-"""
-    read_rdb_hdr(:test)
-self test, using both random data and a local pfile at UM
-"""
-function read_rdb_hdr(test::Symbol)
-	!(test === :test) && throw("bad test $test")
-
-	@test read_rdb_hdr_test()
-
-	# UM-only test below here
-	file = "/n/ir71/d3/fessler/fmri-data-michelle-L+S/P97792.7"
-	isfile(file) && (@test read_rdb_hdr(file).dab[2] == 31)
-
-	true
 end
