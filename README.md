@@ -37,4 +37,5 @@ https://github.com/JeffFessler/MIRT.jl
 will automatically include this code
 through the magic of Julia's package manager.
 
-Tested with Julia 1.0.5, 1.3, 1.4, and should work with 1.1, 1.2.
+Currently tested with Julia 1.5,
+and probably works with earlier versions too.
