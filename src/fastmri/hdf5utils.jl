@@ -17,9 +17,9 @@ import HDF5
 Get `names` from file.  Returns an `Array{String}`
 """
 function h5_get_keys(filename::String)
-	return h5open(filename, "r") do file
-		names(file)
-	end
+    return h5open(filename, "r") do file
+        names(file)
+    end
 end
 
 
@@ -28,14 +28,14 @@ end
 Get `attrs` from file.  Returns a `Dict`
 """
 function h5_get_attributes(filename::String)
-	return h5open(filename, "r") do file
-		a = attrs(file)
-		attr = Dict{String,Any}()
-		for s in names(a)
-			attr[s] = read(a[s])
-		end
-		attr
-	end
+    return h5open(filename, "r") do file
+        a = attrs(file)
+        attr = Dict{String,Any}()
+        for s in names(a)
+            attr[s] = read(a[s])
+        end
+        attr
+    end
 end
 
 
@@ -44,7 +44,7 @@ end
 Get ISMRM header data from file.  Returns a `?`
 """
 function h5_get_ismrmrd(filename::String)
-	return h5read(filename, "ismrmrd_header")
+    return h5read(filename, "ismrmrd_header")
 end
 
 
@@ -59,8 +59,8 @@ but the dimensions are permuted in Julia compared to Python,
 hence the calls to `permutedims` in the following functions.
 """
 function h5_get_ESC(filename::String; T::DataType = ComplexF32)
-	data = T.(h5read(filename, "reconstruction_esc"))
-	return permutedims(data, ndims(data):-1:1)
+    data = T.(h5read(filename, "reconstruction_esc"))
+    return permutedims(data, ndims(data):-1:1)
 end
 
 
@@ -69,8 +69,8 @@ end
 Return `Array` of RSS (root sum of squares) data from file.
 """
 function h5_get_RSS(filename::String; T::DataType = ComplexF32)
-	data = T.(h5read(filename, "reconstruction_rss"))
-	return permutedims(data, ndims(data):-1:1)
+    data = T.(h5read(filename, "reconstruction_rss"))
+    return permutedims(data, ndims(data):-1:1)
 end
 
 
@@ -79,10 +79,10 @@ end
 Return `Array` of kspace data from file.
 """
 function h5_get_kspace(filename::String; T::DataType = ComplexF32)
-	data = h5open(filename, "r") do file
-		readmmap(file["kspace"], Array{h5_getcomplextype(file["kspace"])})
-	end
-	return permutedims(T.(data), ndims(data):-1:1)
+    data = h5open(filename, "r") do file
+        readmmap(file["kspace"], Array{h5_getcomplextype(file["kspace"])})
+    end
+    return permutedims(T.(data), ndims(data):-1:1)
 end
 
 
@@ -91,7 +91,9 @@ Copied (basically) from
 https://github.com/MagneticParticleImaging/MPIFiles.jl/blob/79711bf7af389f9e2dd4b0370e64040e5da1e193/src/Utils.jl#L33
 =#
 function h5_getcomplextype(dataset)
-	T = HDF5.hdf5_to_julia_eltype(
-		HDF5Datatype(HDF5.h5t_get_member_type(datatype(dataset).id, 0)))
-	return Complex{T}
+    T = HDF5.hdf5_to_julia_eltype(HDF5Datatype(HDF5.h5t_get_member_type(
+        datatype(dataset).id,
+        0,
+    )))
+    return Complex{T}
 end
