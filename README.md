@@ -1,8 +1,10 @@
 # MIRTio.jl
 https://github.com/JeffFessler/MIRTio.jl
 
-[![Build Status](https://travis-ci.org/JeffFessler/MIRTio.jl.svg?branch=master)](https://travis-ci.org/JeffFessler/MIRTio.jl)
-[![codecov.io](http://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=master)](http://codecov.io/github/JeffFessler/MIRTio.jl?branch=master)
+[![Build Status][action-img]][action-url]
+[![Build Status][pkgeval-img]][pkgeval-url]
+[![Codecov.io][codecov-img]][codecov-url]
+[![Coveralls][coveralls-img]][coveralls-url]
 
 File I/O routines for
 [MIRT (Michigan Image Reconstruction Toolbox) in Julia](https://github.com/JeffFessler/MIRT.jl)
@@ -38,4 +40,12 @@ will automatically include this code
 through the magic of Julia's package manager.
 
 Currently tested with Julia 1.5,
-and probably works with earlier versions too.
+but may work with earlier versions too.
+
+<!-- URLs -->
+[action-img]: https://github.com/JeffFessler/MIRTio.jl/workflows/Unit%20test/badge.svg
+[action-url]: https://github.com/JeffFessler/MIRTio.jl/actions
+[pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/I/ImageDraw.svg
+[pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/report.html
+[travis-img]: https://travis-ci.org/JeffFessler/MIRTio.jl.svg?branch=master
+[travis-url]: https://travis-ci.org/JeffFessler/MIRTio.jl
