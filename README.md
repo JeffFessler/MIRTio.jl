@@ -45,7 +45,13 @@ but may work with earlier versions too.
 <!-- URLs -->
 [action-img]: https://github.com/JeffFessler/MIRTio.jl/workflows/Unit%20test/badge.svg
 [action-url]: https://github.com/JeffFessler/MIRTio.jl/actions
+[codecov-img]: https://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=master
+[codecov-url]: https://codecov.io/github/JeffFessler/MIRTio.jl?branch=master
+[coveralls-img]: https://coveralls.io/repos/JeffFessler/MIRTio.jl/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/JeffFessler/MIRTio.jl?branch=master
+<!--
 [pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/I/ImageDraw.svg
 [pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/report.html
 [travis-img]: https://travis-ci.org/JeffFessler/MIRTio.jl.svg?branch=master
 [travis-url]: https://travis-ci.org/JeffFessler/MIRTio.jl
+-->
