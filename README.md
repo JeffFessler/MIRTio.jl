@@ -23,6 +23,12 @@ which are common in legacy medical imaging formats,
 are in `src/ge-mri/header.jl`,
 such as `header_read` and `header_write`.
 
+Also included are utilities for reading the HDF5 formatted
+raw MRI kspace data
+in the
+[fastMRI](https://fastmri.org/)
+image reconstruction challenge.
+
 This software was developed at the
 [University of Michigan](https://umich.edu/)
 by
