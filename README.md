@@ -4,7 +4,7 @@ https://github.com/JeffFessler/MIRTio.jl
 [![action status][action-img]][action-url]
 [![pkgeval status][pkgeval-img]][pkgeval-url]
 [![codecov.io][codecov-img]][codecov-url]
-[![coveralls][coveralls-img]][coveralls-url]
+[![license][license-img]][license-url]
 
 File I/O routines for
 [MIRT (Michigan Image Reconstruction Toolbox) in Julia](https://github.com/JeffFessler/MIRT.jl)
@@ -55,5 +55,10 @@ but may work with earlier versions too.
 [pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.html
 [codecov-img]: https://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=master
 [codecov-url]: https://codecov.io/github/JeffFessler/MIRTio.jl?branch=master
+[license-img]: http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat
+[license-url]: LICENSE
+<!--
+[![coveralls][coveralls-img]][coveralls-url]
 [coveralls-img]: https://coveralls.io/repos/JeffFessler/MIRTio.jl/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/JeffFessler/MIRTio.jl?branch=master
+-->
