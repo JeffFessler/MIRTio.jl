@@ -1,8 +1,8 @@
 # hdf5utils.jl
 
 using MIRTio: h5_get_keys, h5_get_attributes, h5_get_ismrmrd
-using MIRTio: h5_get_ESC, h5_get_RSS, h5_get_kspace, h5_getcomplextype
-using HDF5: h5open, h5read, attrs
+using MIRTio: h5_get_ESC, h5_get_RSS, h5_get_kspace
+using HDF5: h5open, h5read, attributes
 using Test: @test
 
 filename = tempname()
@@ -13,11 +13,11 @@ esc = rand(T, 3,4,5)
 rss = rand(T, 3,4,5)
 ksp = complex.(rand(T, 3,4,5), rand(T, 3,4,5))
 h5open(filename, "w") do file
-	write(file, "ismrmrd_header", hdr)
-	write(file, "reconstruction_esc", esc)
-	write(file, "reconstruction_rss", rss)
-	write(file, "kspace", ksp)
-	attrs(file)["kspace"] = "spiral"
+    write(file, "ismrmrd_header", hdr)
+    write(file, "reconstruction_esc", esc)
+    write(file, "reconstruction_rss", rss)
+    write(file, "kspace", ksp)
+    attributes(file)["kspace"] = "spiral"
 end
 
 @test hdr == h5read(filename, "ismrmrd_header")
@@ -33,8 +33,11 @@ pdims = x -> permutedims(x, 3:-1:1)
 @test h5_get_RSS(filename ; T=T) == pdims(rss)
 @test h5_get_kspace(filename ; T=ComplexF32) == pdims(ksp)
 
+#=
 h5open(filename, "r") do fid
-	@test h5_getcomplextype(fid["kspace"]) == ComplexF32
+#   @test h5_getcomplextype(fid["kspace"]) == ComplexF32
+    @test eltype(fid["kspace"]) == ComplexF32
 end
+=#
 
 rm(filename)
