@@ -20,7 +20,8 @@ jobs:
     strategy:
       matrix:
         julia-version: ['1.5', 'nightly']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+      # os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest]
       # fail-fast: true
 
     steps:
