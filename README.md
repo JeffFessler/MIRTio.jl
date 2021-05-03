@@ -55,8 +55,8 @@ but may work with earlier versions too.
 [action-url]: https://github.com/JeffFessler/MIRTio.jl/actions
 [pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.svg
 [pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.html
-[codecov-img]: https://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=master
-[codecov-url]: https://codecov.io/github/JeffFessler/MIRTio.jl?branch=master
+[codecov-img]: https://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=main
+[codecov-url]: https://codecov.io/github/JeffFessler/MIRTio.jl?branch=main
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://JeffFessler.github.io/MIRTio.jl/stable
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
@@ -65,6 +65,6 @@ but may work with earlier versions too.
 [license-url]: LICENSE
 <!--
 [![coveralls][coveralls-img]][coveralls-url]
-[coveralls-img]: https://coveralls.io/repos/JeffFessler/MIRTio.jl/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/JeffFessler/MIRTio.jl?branch=master
+[coveralls-img]: https://coveralls.io/repos/JeffFessler/MIRTio.jl/badge.svg?branch=main
+[coveralls-url]: https://coveralls.io/github/JeffFessler/MIRTio.jl?branch=main
 -->
