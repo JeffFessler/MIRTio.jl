@@ -47,7 +47,7 @@ https://github.com/JeffFessler/MIRT.jl
 will automatically include this code
 through the magic of Julia's package manager.
 
-Currently tested with Julia 1.5,
+Currently tested with Julia 1.6,
 but may work with earlier versions too.
 
 <!-- URLs -->
