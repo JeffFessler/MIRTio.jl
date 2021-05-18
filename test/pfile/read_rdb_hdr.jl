@@ -15,7 +15,7 @@ ht = header_init(hd) # random header values
 tname = tempname()
 
 open(tname, "w") do fid
-	header_write(fid, ht ; bytes = header_size(hd))
+    header_write(fid, ht ; bytes = header_size(hd))
 end
 
 # intentionally fail due to random :rdbm_rev
@@ -25,7 +25,7 @@ end
 ht = merge(ht, [:rdbm_rev => Float32(26.002)]) # instead of setindex
 
 open(tname, "w") do fid
-	header_write(fid, ht ; bytes = header_size(hd))
+    header_write(fid, ht ; bytes = header_size(hd))
 end
 
 hr = read_rdb_hdr(tname)

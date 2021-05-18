@@ -43,29 +43,29 @@ in
 
 option
 - `coils::AbstractVector{Int}`
-	only get data for these coils; default: all coils
+ only get data for these coils; default: all coils
 - `echoes::AbstractVector{Int}`
-	only get data for these echoes; default: all echoes
+ only get data for these echoes; default: all echoes
 - `slices::AbstractVector{Int}`
-	only get data for these slices; default: `2:nslices` (NB!)
-	because first slice (dabslice=0 slot) may contain corrupt data.
+ only get data for these slices; default: `2:nslices` (NB!)
+ because first slice (dabslice=0 slot) may contain corrupt data.
 - `views::AbstractVector{Int}`
-	only get data for these views; default: all views
-- `quiet::Bool`	non-verbosity, default `false`
+ only get data for these views; default: all views
+- `quiet::Bool` non-verbosity, default `false`
 
 out
 - `dat::Array{Complex{Int16}}` `[ndat, ncoil, nslice, necho, nview]`
-- `rdb_hdr::NamedTuple`	header information
+- `rdb_hdr::NamedTuple` header information
 
 To save memory the output type is complex-valued Int16.
 """
 function loadpfile(
     fid::IOStream;
     filesize::Int = 0,
-    coils::AbstractVector{Int} = empty([], Int),
-    echoes::AbstractVector{Int} = empty([], Int),
-    slices::AbstractVector{Int} = empty([], Int),
-    views::AbstractVector{Int} = empty([], Int),
+    coils::AbstractVector{Int} = Int[],
+    echoes::AbstractVector{Int} = Int[],
+    slices::AbstractVector{Int} = Int[],
+    views::AbstractVector{Int} = Int[],
     quiet::Bool = false,
 )
 
@@ -128,8 +128,8 @@ function loadpfile(
     mempercentuse = 100 * memneeded / memfree
     (mempercentuse > 100) &&
         @warn("Loading data ($(memneeded/1e9) GB) may exceed available RAM and freeze system")
-    #	fprintf('Press enter to continue anyway...');
-    #	input('');
+    # fprintf('Press enter to continue anyway...');
+    # input('');
     (mempercentuse > 90) && # Warn if we will we use 90% of memory
         @warn("Loading data ($(memneeded/1e9) GB) will use $mempercentuse % of your available RAM. Proceed with caution!")
 
@@ -145,14 +145,14 @@ function loadpfile(
     # This simplifies the IO here!
     data = Array{Complex{Int16}}(undef, dims)
     dtmp = Array{Complex{Int16}}(undef, ndat) # one readout
-    #	!quiet && textprogressbar('Loading data: ')
+    # !quiet && textprogressbar('Loading data: ')
     for icoil in coils
         !quiet && (@show icoil)
-        #	!quiet && textprogressbar(icoil/ncoils*100)
+        # !quiet && textprogressbar(icoil/ncoils*100)
         for islice in slices
             for iecho in echoes
                 for iview in views
-                    #	!quiet && (@info "icoil=$icoil islice=$islice iecho=$iecho iview=$iview")
+                    # !quiet && (@info "icoil=$icoil islice=$islice iecho=$iecho iview=$iview")
                     offsetres =
                         (icoil - 1) * coilres +
                         (islice - 1) * sliceres +
@@ -173,14 +173,16 @@ function loadpfile(
         end
     end
 
-    #	!quiet && textprogressbar(' done.')
+    # !quiet && textprogressbar(' done.')
 
     return (data, rdb_hdr)
 end
 
 
 """
-    loadpfile(file::String ; kwargs...)
+    (dat, rdb_hdr) = loadpfile(file::String ; ...)
+
+Load from `file`.
 """
 function loadpfile(file::String; kwargs...)
     open(file, "r") do fid
@@ -190,9 +192,9 @@ end
 
 
 """
-    loadpfile(file, echo::Integer ; ...)
+    (dat, rdb_hdr) = loadpfile(file, echo::Integer ; ...)
 
-load a single echo
+Load a single echo from `file`.
 """
 function loadpfile(pfile::String, echo::Integer; kwarg...)
     return loadpfile(pfile, echoes = [echo]; kwarg...)
