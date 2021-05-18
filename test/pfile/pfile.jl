@@ -28,13 +28,13 @@ ht = merge(ht, [:off_data => Int32(hs)])
 
 tname = tempname()
 open(tname, "w") do fid
-	header_write(fid, ht)
+    header_write(fid, ht)
 end
 
 # Apparent file data order is: [ndat, nview, necho, nslice, ncoil]
 fdat = rand(Complex{Int16}, ndat, nview+1, necho, nslice, ncoil) # rand test data
 open(tname, "a") do fid
-	write(fid, fdat)
+    write(fid, fdat)
 end
 
 (odat, hr) = loadpfile(tname ; quiet=true) # load and verify
@@ -63,7 +63,7 @@ nview = 2 # test special case
 ht = merge(ht, [:nframes => Int16(nview)])
 fdat = zeros(Complex{Int16}, ndat, nview+1, necho, nslice, ncoil)
 open(tname, "w") do fid
-	header_write(fid, ht)
-	write(fid, fdat)
+    header_write(fid, ht)
+    write(fid, fdat)
 end
 loadpfile(tname ; quiet=true)
