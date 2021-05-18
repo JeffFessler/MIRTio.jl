@@ -67,4 +67,3 @@ open(tname, "w") do fid
 	write(fid, fdat)
 end
 loadpfile(tname ; quiet=true)
-rm(tname)

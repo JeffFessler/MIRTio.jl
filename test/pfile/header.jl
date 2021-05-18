@@ -22,5 +22,3 @@ open(tname, "r") do fid
 	@test hu.date isa String
 	@test all([hu[i] == ht[i] for i=2:length(hu)])
 end
-
-rm(tname)

@@ -39,5 +39,3 @@ h5open(filename, "r") do fid
     @test eltype(fid["kspace"]) == ComplexF32
 end
 =#
-
-rm(filename)
