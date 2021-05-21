@@ -2,7 +2,7 @@ name: CompatHelper
 
 on:
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: 0 0 * * 0 # weekly
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
       - name: CompatHelper.main()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMPATHELPER_PRIV: ${{ secrets.COMPATHELPER_PRIV }}  # optional
+          COMPATHELPER_PRIV: ${{ secrets.COMPATHELPER_PRIV }} # need ssh
         run: julia -e 'using CompatHelper; CompatHelper.main()'
 
 # based on:
