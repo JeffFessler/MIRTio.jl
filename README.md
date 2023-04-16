@@ -38,16 +38,7 @@ by
 and his
 [group](http://web.eecs.umich.edu/~fessler/group).
 
-This code is a package dependency of
-[MIRT.jl](https://github.com/JeffFessler/MIRT.jl)
-so most users will never clone this repo directly.
-Installing MIRT
-by following the instructions at
-https://github.com/JeffFessler/MIRT.jl
-will automatically include this code
-through the magic of Julia's package manager.
-
-Currently tested with Julia 1.6,
+Currently tested with Julia 1.8,
 but may work with earlier versions too.
 
 <!-- URLs -->
