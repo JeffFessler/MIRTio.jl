@@ -30,16 +30,16 @@ function loadrds(fid::IOStream, frame::Int, frsize::Int, ncoil::Int;
 )
 
     if ptsize == 2
-        d = Array{Complex{Int16}}(undef, frsize*ncoil) # one readout
+        d = Array{Complex{Int16}}(undef, frsize, ncoil) # one readout
     else
-        d = Array{Complex{Int32}}(undef, frsize*ncoil)
+        d = Array{Complex{Int32}}(undef, frsize, ncoil)
     end
 
     seek(fid, 2*ptsize*(frame-1)*frsize*ncoil)
 
-    read!(fid, d)
+    read!(fid, vec(d))
 
-    reshape(d, frsize, ncoil)
+    return d
 end
 
 """
