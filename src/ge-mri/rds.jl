@@ -54,15 +54,7 @@ out
 function loadrds(fid::IOStream, frames::AbstractArray{<:Int}, frsize::Int, ncoil::Int;
     ptsize::Int = 2,
 )
-    if ptsize == 2
-        d = Array{Complex{Int16}}(undef, frsize, ncoil, length(frames)) 
-    else
-        d = Array{Complex{Int32}}(undef, frsize, ncoil, length(frames))
-    end
-
-    for i in 1:length(frames)
-        d[:, :, i] = loadrds(fid, frames[i], frsize, ncoil; ptsize = ptsize);
-    end
+d = stack([loadrds(fid, frame, frsize, ncoil; ptsize) for frame in frames])
 
     return d
 end
