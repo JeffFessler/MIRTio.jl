@@ -51,7 +51,7 @@ Read multiple frames. Here, `frames` is an Int vector/array/range.
 out
 - `dat::Array{Complex{Int16/Int32}}` `[frsize, ncoil, length(frames)]`
 """
-function loadrds(fid::IOStream, frames, frsize::Int, ncoil::Int;
+function loadrds(fid::IOStream, frames::AbstractArray{<:Int}, frsize::Int, ncoil::Int;
     ptsize::Int = 2,
 )
     if ptsize == 2
