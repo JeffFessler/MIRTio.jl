@@ -29,11 +29,8 @@ function loadrds(fid::IOStream, frame::Int, frsize::Int, ncoil::Int;
     ptsize::Int = 2,
 )
 
-    if ptsize == 2
-        d = Array{Complex{Int16}}(undef, frsize, ncoil) # one readout
-    else
-        d = Array{Complex{Int32}}(undef, frsize, ncoil)
-    end
+    T = ptsize == 2 ? Int16 : ptsize == 4 ? Int32 : throw(ArgumentError("ptsize $ptsize"))
+    d = Array{Complex{T}}(undef, frsize, ncoil) # one readout
 
     seek(fid, 2*ptsize*(frame-1)*frsize*ncoil)
 
