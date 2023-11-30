@@ -54,7 +54,7 @@ out
 function loadrds(fid::IOStream, frames::AbstractArray{<:Int}, frsize::Int, ncoil::Int;
     ptsize::Int = 2,
 )
-d = stack([loadrds(fid, frame, frsize, ncoil; ptsize) for frame in frames])
+    d = stack([loadrds(fid, frame, frsize, ncoil; ptsize) for frame in frames])
 
     return d
 end
