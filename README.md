@@ -38,7 +38,7 @@ by
 and his
 [group](http://web.eecs.umich.edu/~fessler/group).
 
-Currently tested with Julia 1.8,
+Currently tested with Julia 1.10,
 but may work with earlier versions too.
 
 <!-- URLs -->
