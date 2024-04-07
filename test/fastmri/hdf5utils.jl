@@ -9,9 +9,10 @@ filename = tempname()
 
 hdr = "ismrm header test"
 T = Float32
-esc = rand(T, 3,4,5)
-rss = rand(T, 3,4,5)
-ksp = complex.(rand(T, 3,4,5), rand(T, 3,4,5))
+dims = (3,4,5)
+esc = rand(T, dims)
+rss = rand(T, dims)
+ksp = complex.(rand(T, dims), rand(T, dims))
 h5open(filename, "w") do file
     write(file, "ismrmrd_header", hdr)
     write(file, "reconstruction_esc", esc)
@@ -29,8 +30,8 @@ pdims = x -> permutedims(x, 3:-1:1)
 @test h5_get_keys(filename)[2] == "kspace"
 @test h5_get_attributes(filename) isa Dict
 @test h5_get_ismrmrd(filename) == hdr
-@test h5_get_ESC(filename ; T=T) == pdims(esc)
-@test h5_get_RSS(filename ; T=T) == pdims(rss)
+@test h5_get_ESC(filename ; T) == pdims(esc)
+@test h5_get_RSS(filename ; T) == pdims(rss)
 @test h5_get_kspace(filename ; T=ComplexF32) == pdims(ksp)
 
 #=
