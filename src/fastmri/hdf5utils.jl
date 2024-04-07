@@ -75,7 +75,7 @@ Return `Array` of RSS (root sum of squares) data from file.
 """
 function h5_get_RSS(
     filename::String;
-    T::Type{<:Complex{<:AbstractFloat}} = ComplexF32,
+    T::Type{<:Number} = Float32,
 )
     data = T.(h5read(filename, "reconstruction_rss"))
     return permutedims(data, ndims(data):-1:1)

@@ -8,11 +8,12 @@ using Test: @test
 filename = tempname()
 
 hdr = "ismrm header test"
-T = Float32
+Tf = Float32
+Tc = Complex{Tf}
 dims = (3,4,5)
-esc = rand(T, dims)
-rss = rand(T, dims)
-ksp = complex.(rand(T, dims), rand(T, dims))
+esc = rand(Tc, dims)
+rss = rand(Tf, dims)
+ksp = rand(Tc, dims)
 h5open(filename, "w") do file
     write(file, "ismrmrd_header", hdr)
     write(file, "reconstruction_esc", esc)
@@ -30,9 +31,9 @@ pdims = x -> permutedims(x, 3:-1:1)
 @test h5_get_keys(filename)[2] == "kspace"
 @test h5_get_attributes(filename) isa Dict
 @test h5_get_ismrmrd(filename) == hdr
-@test h5_get_ESC(filename ; T) == pdims(esc)
-@test h5_get_RSS(filename ; T) == pdims(rss)
-@test h5_get_kspace(filename ; T=ComplexF32) == pdims(ksp)
+@test h5_get_ESC(filename ; T=Tc) == pdims(esc)
+@test h5_get_RSS(filename ; T=Tf) == pdims(rss)
+@test h5_get_kspace(filename ; T=Tc) == pdims(ksp)
 
 #=
 h5open(filename, "r") do fid
