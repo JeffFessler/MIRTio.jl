@@ -20,5 +20,5 @@ open(tname, "r") do fid
     hu = header_string(hr)
     @test hu isa NamedTuple
     @test hu.date isa String
-    @test all([hu[i] == ht[i] for i=2:length(hu)])
+    @test all([hu[i] == ht[i] for i in 2:length(hu)])
 end

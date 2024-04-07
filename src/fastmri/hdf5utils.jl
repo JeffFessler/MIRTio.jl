@@ -51,7 +51,7 @@ end
 
 
 """
-    esc = h5_get_ESC(filename::String; T::DataType = ComplexF32)
+    esc = h5_get_ESC(filename::String; T::Type = ComplexF32)
 Return `Array` of ESC (emulated single coil) data from file.
 
 HDF5.jl reads the data differently than Python's h5py.
@@ -60,27 +60,36 @@ says that the datasets have certain dimensionality,
 but the dimensions are permuted in Julia compared to Python,
 hence the calls to `permutedims` in the following functions.
 """
-function h5_get_ESC(filename::String; T::DataType = ComplexF32)
+function h5_get_ESC(
+    filename::String;
+    T::Type{<:Complex{<:AbstractFloat}} = ComplexF32,
+)
     data = T.(h5read(filename, "reconstruction_esc"))
     return permutedims(data, ndims(data):-1:1)
 end
 
 
 """
-    rss = h5_get_RSS(filename::String; T::DataType = ComplexF32)
+    rss = h5_get_RSS(filename::String; T::Type = ComplexF32)
 Return `Array` of RSS (root sum of squares) data from file.
 """
-function h5_get_RSS(filename::String; T::DataType = ComplexF32)
+function h5_get_RSS(
+    filename::String;
+    T::Type{<:Number} = Float32,
+)
     data = T.(h5read(filename, "reconstruction_rss"))
     return permutedims(data, ndims(data):-1:1)
 end
 
 
 """
-    kspace = h5_get_kspace(filename::String; T::DataType = ComplexF32))
+    kspace = h5_get_kspace(filename::String; T::Type = ComplexF32))
 Return `Array` of kspace data from file.
 """
-function h5_get_kspace(filename::String; T::DataType = ComplexF32)
+function h5_get_kspace(
+    filename::String;
+    T::Type{<:Complex{<:AbstractFloat}} = ComplexF32,
+)
     data = h5open(filename, "r") do file
         T = eltype(file["kspace"])
         HDF5.readmmap(file["kspace"], T)
