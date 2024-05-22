@@ -102,7 +102,7 @@ end
 Copied (basically) from
 https://github.com/MagneticParticleImaging/MPIFiles.jl/blob/79711bf7af389f9e2dd4b0370e64040e5da1e193/src/Utils.jl#L33
 
-superceded by eltype()
+superseded by eltype()
 function h5_getcomplextype(dataset)
     T = HDF5.get_jl_type(
             HDF5.Datatype(
