@@ -9,8 +9,8 @@ Documentation by Jeff Fessler
 export h5_get_keys, h5_get_attributes, h5_get_ismrmrd
 export h5_get_ESC, h5_get_RSS, h5_get_kspace
 
-using HDF5: h5open, h5read, attributes, eltype, keys
-import HDF5 # readmmap
+using HDF5: h5open, h5read, attributes
+import HDF5 # readmmap (non-public!?)
 
 
 """
