@@ -18,9 +18,3 @@ File I/O routines useful for the Michigan Image Reconstruction Toolbox
 
 ```@index
 ```
-
-## Functions
-
-```@autodocs
-Modules = [MIRTio]
-```
