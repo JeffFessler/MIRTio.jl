@@ -8,8 +8,9 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "julia"
-    directories: # Location of Julia projects
+    directory: # Location of Julia project(s)
       - "/"
+    exclude-paths: # do not bother with [compat] for these
       - "/docs"
       - "/test"
     schedule:
