@@ -49,7 +49,7 @@ and his
 [group](http://web.eecs.umich.edu/~fessler/group)
 and collaborators.
 
-Currently tested with Julia 1.10,
+Currently tested with Julia ≥ 1.12,
 but may work with earlier versions too.
 
 <!-- URLs -->
