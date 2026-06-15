@@ -1,17 +1,17 @@
 # MIRTio.jl
 https://github.com/JeffFessler/MIRTio.jl
 
-[![action status][action-img]][action-url]
-[![pkgeval status][pkgeval-img]][pkgeval-url]
-[![codecov.io][codecov-img]][codecov-url]
-[![license][license-img]][license-url]
 [![docs-stable][docs-stable-img]][docs-stable-url]
 [![docs-dev][docs-dev-img]][docs-dev-url]
+[![action][action-img]][action-url]
 [![Aqua QA][aqua-img]][aqua-url]
+[![codecov.io][codecov-img]][codecov-url]
 [![code-style][code-blue-img]][code-blue-url]
-[![deps](https://juliahub.com/docs/MIRTio/deps.svg)](https://juliahub.com/ui/Packages/MIRTio)
-[![version](https://juliahub.com/docs/MIRTio/version.svg)](https://juliahub.com/ui/Packages/MIRTio)
+[![deps][deps-img]][deps-url]
+[![license][license-img]][license-url]
+[![pkgeval][pkgeval-img]][pkgeval-url]
 [![pkgeval](https://juliahub.com/docs/MIRTio/pkgeval.svg)](https://juliahub.com/ui/Packages/MIRTio)
+[![version][ver-img]][ver-url]
 
 
 File I/O routines for
@@ -59,13 +59,18 @@ but may work with earlier versions too.
 [aqua-url]: https://github.com/JuliaTesting/Aqua.jl
 [code-blue-img]: https://img.shields.io/badge/code%20style-blue-4495d1.svg
 [code-blue-url]: https://github.com/invenia/BlueStyle
-[codecov-img]: https://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg?branch=main
-[codecov-url]: https://codecov.io/github/JeffFessler/MIRTio.jl?branch=main
+[codecov-img]: https://codecov.io/github/JeffFessler/MIRTio.jl/coverage.svg
+[codecov-url]: https://codecov.io/github/JeffFessler/MIRTio.jl
+[deps-img]: https://juliahub.com/docs/MIRTio/deps.svg
+[deps-url]: https://juliahub.com/ui/Packages/MIRTio
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://JeffFessler.github.io/MIRTio.jl/stable
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://JeffFessler.github.io/MIRTio.jl/dev
-[license-img]: http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat
+[license-img]: http://img.shields.io/badge/license-MIT-brightgreen.svg
 [license-url]: LICENSE
 [pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.svg
 [pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.html
+[![pkgeval](https://juliahub.com/docs/MIRTio/pkgeval.svg)](https://juliahub.com/ui/Packages/MIRTio)
+[ver-img]: https://juliahub.com/docs/MIRTio/version.svg
+[ver-url]: https://juliahub.com/ui/Packages/MIRTio
