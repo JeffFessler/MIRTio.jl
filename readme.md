@@ -71,6 +71,5 @@ but may work with earlier versions too.
 [license-url]: LICENSE
 [pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.svg
 [pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/M/MIRTio.html
-[![pkgeval](https://juliahub.com/docs/MIRTio/pkgeval.svg)](https://juliahub.com/ui/Packages/MIRTio)
 [ver-img]: https://juliahub.com/docs/MIRTio/version.svg
 [ver-url]: https://juliahub.com/ui/Packages/MIRTio
