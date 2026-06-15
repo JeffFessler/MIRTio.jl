@@ -9,8 +9,5 @@ updates:
 
   - package-ecosystem: "julia"
     directory: "/"
-    exclude-paths: # do not bother with [compat] for these
-      - "/docs"
-      - "/test"
     schedule:
       interval: "weekly"
