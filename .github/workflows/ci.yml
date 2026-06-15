@@ -32,8 +32,8 @@ jobs:
         id: julia-version
         with:
           versions: |
-            - min  # Oldest supported version in Project.toml
-            - 1    # Latest release
+            - min # Oldest supported version in Project.toml
+            - 1 # Latest release
 
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }}
